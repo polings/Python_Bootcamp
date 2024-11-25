@@ -1,0 +1,25 @@
+hosts: localhost
+become: true
+tasks:
+- name: Install packages
+  ansible.builtin.apt:
+    pkg:
+    - python3
+    - nginx
+    - redis
+- name: Copy exploit.py file
+  ansible.builtin.copy:
+    src: src/ex00/exploit.py
+    dest: src/ex02/exploit.py
+- name: Run a python script exploit.py
+  ansible.builtin.script: src/ex02/exploit.py
+  args:
+    executable: python
+- name: Copy consumer.py file
+  ansible.builtin.copy:
+    src: src/ex01/consumer.py
+    dest: src/ex02/consumer.py
+- name: Run a python script consumer.py
+  ansible.builtin.script: src/ex02/consumer.py -e 4815162342,3133780085
+  args:
+    executable: python3
